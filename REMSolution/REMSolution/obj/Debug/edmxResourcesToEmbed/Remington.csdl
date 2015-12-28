@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="RemingtonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="RemingtonEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="PropertyTypes" EntityType="RemingtonModel.PropertyType" />
+    <EntitySet Name="RecordSources" EntityType="RemingtonModel.RecordSource" />
+    <AssociationSet Name="FK_REMRecordSources_REMRecordSources" Association="RemingtonModel.FK_REMRecordSources_REMRecordSources">
+      <End Role="RecordSource" EntitySet="RecordSources" />
+      <End Role="RecordSource1" EntitySet="RecordSources" />
+    </AssociationSet>
+    <EntitySet Name="Images" EntityType="RemingtonModel.Image" />
+    <EntitySet Name="RealProperties" EntityType="RemingtonModel.RealProperty" />
+    <AssociationSet Name="FK_REMProperties_REMPropertyTypes" Association="RemingtonModel.FK_REMProperties_REMPropertyTypes">
+      <End Role="PropertyType" EntitySet="PropertyTypes" />
+      <End Role="RealProperty" EntitySet="RealProperties" />
+    </AssociationSet>
+    <AssociationSet Name="FK_REMProperties_REMRecordSources" Association="RemingtonModel.FK_REMProperties_REMRecordSources">
+      <End Role="RecordSource" EntitySet="RecordSources" />
+      <End Role="RealProperty" EntitySet="RealProperties" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="PropertyType">
+    <Key>
+      <PropertyRef Name="PropertyTypeId" />
+    </Key>
+    <Property Name="PropertyTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PropertyTypeName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Icon" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="RealProperties" Relationship="RemingtonModel.FK_REMProperties_REMPropertyTypes" FromRole="PropertyType" ToRole="RealProperty" />
+  </EntityType>
+  <EntityType Name="RecordSource">
+    <Key>
+      <PropertyRef Name="RecordSourceID" />
+    </Key>
+    <Property Name="RecordSourceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RecordSourceName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="RecordSources1" Relationship="RemingtonModel.FK_REMRecordSources_REMRecordSources" FromRole="RecordSource" ToRole="RecordSource1" />
+    <NavigationProperty Name="RecordSource1" Relationship="RemingtonModel.FK_REMRecordSources_REMRecordSources" FromRole="RecordSource1" ToRole="RecordSource" />
+    <NavigationProperty Name="RealProperties" Relationship="RemingtonModel.FK_REMProperties_REMRecordSources" FromRole="RecordSource" ToRole="RealProperty" />
+  </EntityType>
+  <Association Name="FK_REMRecordSources_REMRecordSources">
+    <End Type="RemingtonModel.RecordSource" Role="RecordSource" Multiplicity="1" />
+    <End Type="RemingtonModel.RecordSource" Role="RecordSource1" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="RecordSource">
+        <PropertyRef Name="RecordSourceID" />
+      </Principal>
+      <Dependent Role="RecordSource1">
+        <PropertyRef Name="RecordSourceID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Image">
+    <Key>
+      <PropertyRef Name="ImageId" />
+    </Key>
+    <Property Name="ImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ImageUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="PropertyId" Type="Int32" Nullable="false" />
+    <Property Name="PropDefault" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RealProperty">
+    <Key>
+      <PropertyRef Name="PropertyID" />
+    </Key>
+    <Property Name="PropertyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PropertyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="AddressLine1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="AddressLine2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="City" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="State" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Name="ZipCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="RecordSourceID" Type="Int32" />
+    <Property Name="ListPrice" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Zestimate" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="PropertyTypeId" Type="Int32" />
+    <Property Name="Garage" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Bedrooms" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Bathrooms" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="SquareFeet" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Basement" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="PropertyType" Relationship="RemingtonModel.FK_REMProperties_REMPropertyTypes" FromRole="RealProperty" ToRole="PropertyType" />
+    <NavigationProperty Name="RecordSource" Relationship="RemingtonModel.FK_REMProperties_REMRecordSources" FromRole="RealProperty" ToRole="RecordSource" />
+  </EntityType>
+  <Association Name="FK_REMProperties_REMPropertyTypes">
+    <End Type="RemingtonModel.PropertyType" Role="PropertyType" Multiplicity="0..1" />
+    <End Type="RemingtonModel.RealProperty" Role="RealProperty" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PropertyType">
+        <PropertyRef Name="PropertyTypeId" />
+      </Principal>
+      <Dependent Role="RealProperty">
+        <PropertyRef Name="PropertyTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_REMProperties_REMRecordSources">
+    <End Type="RemingtonModel.RecordSource" Role="RecordSource" Multiplicity="0..1" />
+    <End Type="RemingtonModel.RealProperty" Role="RealProperty" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RecordSource">
+        <PropertyRef Name="RecordSourceID" />
+      </Principal>
+      <Dependent Role="RealProperty">
+        <PropertyRef Name="RecordSourceID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

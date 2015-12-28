@@ -1,0 +1,220 @@
+﻿@model REMSolution.Models.RealPropertiesModel
+
+@{
+    ViewBag.Title = "Home Page";
+    
+}
+@section HeadExtras {
+    <style type="text/css">
+        #map-canvas {
+            height: 550px;
+            width: 750px;
+            margin: 0;
+            padding: 0;
+        }
+        .webGrid {margin:4px;border-collapse:collapse;width:300px;}
+        .header {background-color:#E8E8E8;font-weight:bold;padding:5px;}
+        .webGrid th, .webGrid td {border: 1px solid #C0C0C0; padding: 5px;}
+        .alt {background-color: #E8E8E8; color: #000;}
+    </style>
+    <script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzB-8m8FTI1GiCdizDsFwy7QtXjDI0dCk">
+    </script>
+    <script type="text/javascript">
+    var map;
+    var geocoder;
+
+    var AddressIcons = [
+            @foreach (var iconItem in Model.PropertyList)
+                {
+                    @:"@iconItem.PropIcon",
+                }
+    ];
+
+    var Addresses = [
+            @foreach (var item in Model.PropertyList)
+                {
+                @:"@item.AddressLine1 @item.City, @item.State @item.Zip",
+                }
+        ];
+        function initialize() {
+            geocoder = new google.maps.Geocoder();
+            var mapOptions = {
+                center: { lat: 43.5, lng: -83.20438 },
+                zoom: 7
+            };
+            map = new google.maps.Map(document.getElementById('map-canvas'),
+                mapOptions);
+            google.maps.event.trigger(map, 'resize');
+            map.setZoom(map.getZoom());
+
+            var AddressToGeoCode;
+            var PropColor;
+
+            geocodeAddress(0);
+
+
+        }
+        function geocodeAddress(address) {
+
+            //
+            //map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+            var localAddr = address;
+            geocoder.geocode({ 'address': Addresses[address] }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var marker = new google.maps.Marker({
+                        icon: "../../Content/mapIcons/" + AddressIcons[address],
+                        map: map,
+                        animation: google.maps.Animation.DROP,
+                        position: results[0].geometry.location
+                    });
+
+                    google.maps.event.addListener(marker, 'click', function () {
+                        $('#PropDefaultImg').attr("src", "");
+                        $("#AddressInfo").html(Addresses[localAddr]);
+                        $("#myModal").modal('show');
+                    });
+
+                    if (address < Addresses.length - 1) {
+                        address++
+                        geocodeAddress(address);
+
+                    }
+
+
+                } else {
+                    setTimeout(function () { geocodeAddress(address); }, 1000);
+
+                }
+            });
+
+        }
+
+        function OpenModal(propID, Address, City, imgURL)
+        {
+            $("#modalPropertyId").val(propID);
+            $('#PropDefaultImg').attr("src", imgURL);
+            $('#AddressInfo').html(Address + ' ' + City);
+            $("#myModal").modal("show");
+
+        }
+
+        function Edit()
+        {
+            location.href = "/Properties/EditProperty?propId=" + $("#modalPropertyId").val();
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+
+}
+<div id="page-wrapper">
+<br/><br/>    
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-6">
+            <!--Map Panel-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-building-o fa-fw"></i> Property Map
+                    <div class="pull-right">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                Actions
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu pull-right" role="menu">
+                                <li>
+                                    <a href="#">Action</a>
+                                </li>
+                                <li>
+                                    <a href="#">Another action</a>
+                                </li>
+                                <li>
+                                    <a href="#">Something else here</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="#">Separated link</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <!--<div id="morris-area-chart"></div>-->
+                    <div id="map-canvas"></div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.Map Panel -->
+            
+        </div>
+        <!-- /.col-lg-8 -->
+        <div class="col-lg-6">
+            <!--PropertyList Panel-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bell fa-fw"></i> Property List
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="list-group">
+                        <!--This is where the sortable, pageable list will go-->
+                        <!--http://www.dotnetcurry.com/ShowArticle.aspx?ID=615-->
+                        @{var grid = new WebGrid(Model.PropertyList);
+                          @grid.GetHtml(tableStyle: "webGrid",
+                          headerStyle:  "header",
+                          alternatingRowStyle: "alt",
+                          columns:grid.Columns(
+                                grid.Column("propIcon", "", canSort: false, format:@<img src="~/Content/mapIcons/@item.propIcon" />), 
+                          grid.Column("PropertyName", "Name", canSort: true, format:@<a href="javascript: OpenModal(@item.PropertyID, '@item.AddressLine1', '@item.City', '@item.DefaultImgUrl');">@item.PropertyName</a>),
+                                                              grid.Column("AddressLine1", "Address", canSort: true),
+                                                              grid.Column("City", "City", canSort: true),
+                                                              grid.Column("Zip", "Zip", canSort: true),
+                                                              grid.Column("ListPrice", "List Price", canSort: true),
+                                                              grid.Column("RecordSource", "Source", canSort: true)
+                                                                )
+                                                              );}
+                    </div>
+                    
+                    <!-- /.list-group -->
+                    <br/><br/><br/><br/><br/>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.PropertyList Panel -->
+            
+            
+        </div>
+        <!-- /.col-lg-4 -->
+    </div>
+    <!-- /.row -->
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-building-o fa-fw"></i>Property Details</h4>
+                <input type="hidden" id="modalPropertyId" />
+            </div>
+            <img id="PropDefaultImg" width="200px" />
+            <div id="AddressInfo" class="modal-body">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="EditButton" onclick="javascript: Edit();">Edit</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<script language="javascript">
+
+
+
+    </script>

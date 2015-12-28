@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="RemingtonModelStoreContainer" CdmEntityContainer="RemingtonEntities">
+    <EntitySetMapping Name="PropertyTypes">
+      <EntityTypeMapping TypeName="RemingtonModel.PropertyType">
+        <MappingFragment StoreEntitySet="PropertyTypes">
+          <ScalarProperty Name="Icon" ColumnName="Icon" />
+          <ScalarProperty Name="PropertyTypeName" ColumnName="PropertyTypeName" />
+          <ScalarProperty Name="PropertyTypeId" ColumnName="PropertyTypeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RecordSources">
+      <EntityTypeMapping TypeName="RemingtonModel.RecordSource">
+        <MappingFragment StoreEntitySet="RecordSources">
+          <ScalarProperty Name="RecordSourceName" ColumnName="RecordSourceName" />
+          <ScalarProperty Name="RecordSourceID" ColumnName="RecordSourceID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Images">
+      <EntityTypeMapping TypeName="RemingtonModel.Image">
+        <MappingFragment StoreEntitySet="Images">
+          <ScalarProperty Name="PropDefault" ColumnName="PropDefault" />
+          <ScalarProperty Name="PropertyId" ColumnName="PropertyId" />
+          <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+          <ScalarProperty Name="ImageId" ColumnName="ImageId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RealProperties">
+      <EntityTypeMapping TypeName="RemingtonModel.RealProperty">
+        <MappingFragment StoreEntitySet="RealProperties">
+          <ScalarProperty Name="Basement" ColumnName="Basement" />
+          <ScalarProperty Name="SquareFeet" ColumnName="SquareFeet" />
+          <ScalarProperty Name="Bathrooms" ColumnName="Bathrooms" />
+          <ScalarProperty Name="Bedrooms" ColumnName="Bedrooms" />
+          <ScalarProperty Name="Garage" ColumnName="Garage" />
+          <ScalarProperty Name="PropertyTypeId" ColumnName="PropertyTypeId" />
+          <ScalarProperty Name="Zestimate" ColumnName="Zestimate" />
+          <ScalarProperty Name="ListPrice" ColumnName="ListPrice" />
+          <ScalarProperty Name="RecordSourceID" ColumnName="RecordSourceID" />
+          <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
+          <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+          <ScalarProperty Name="PropertyName" ColumnName="PropertyName" />
+          <ScalarProperty Name="PropertyID" ColumnName="PropertyID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

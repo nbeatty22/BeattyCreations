@@ -1,0 +1,335 @@
+﻿@model REMSolution.Models.RealPropertiesModel
+
+@{
+    ViewBag.Title = "Edit Property";
+
+}
+@section HeadExtras {
+    <style type="text/css">
+        
+    </style>
+
+    <script language="javascript">
+
+        var FormDirty = false;
+
+        function FormChange() {
+            FormDirty = true;
+        }
+
+        function CheckDirty() {
+            return FormDirty;
+        }
+
+        function AddPic() {
+
+            if (CheckDirty()) {
+                alert("Please save your other changes to this property before adding more pictures.");
+            }
+            else
+            {
+                $("#picModal").modal("show");
+            }
+
+        }
+
+    </script>
+
+}
+<div id="page-wrapper">
+    <br />
+    <div class="row">
+        <div class="col-lg-12">
+            <!--Map Panel-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="modal-title"><i class="fa fa-building-o fa-fw"></i>Property Details</h4>
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <img src="@Model.DefaultImgUrl" width="200px" />
+                    <br />
+                    @Model.PropertyName
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.Map Panel -->
+
+        </div>
+
+    </div>
+    <!-- /.row -->
+    <a class="btn btn-outline btn-default" href="#"><i class="fa fa-building-o fa-fw"></i>Property</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-outline btn-primary" href="#"><i class="fa fa-tasks fa-fw"></i>Projects</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-outline btn-primary" href="#"><i class="fa fa-dollar fa-fw"></i>Financials</a>
+        <hr />
+        @using (Html.BeginForm("EditProperty", "Properties", FormMethod.Post, new { enctype = "multipart/form-data", id = "EditForm", onchange = "FormChange();" }))
+        {
+            <div class="row">
+                <div class="col-sm-2">
+                    <h4>Edit Property</h4>
+                    @Html.HiddenFor(m => m.PropertyID)
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <!--Map Panel-->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Demographics
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <b>Default Image</b>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="file" name="DefaultImageUpload" id="DefaultImageUpload" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    @Html.LabelFor(m => m.PropertyName)
+                                </div>
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(m => m.PropertyName)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    @Html.LabelFor(m => m.PropertyTypeID)
+                                </div>
+                                <div class="col-sm-4">
+                                    @Html.DropDownListFor(m => m.PropertyTypeID, Model.PropertyTypeList)
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    @Html.LabelFor(m => m.AddressLine1)
+                                </div>
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(m => m.AddressLine1)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    @Html.LabelFor(m => m.AddressLine2)
+                                </div>
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(m => m.AddressLine2)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    @Html.LabelFor(m => m.City)
+                                </div>
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(m => m.City)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    @Html.LabelFor(m => m.State)
+                                </div>
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(m => m.State)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    @Html.LabelFor(m => m.ZipCode)
+                                </div>
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(m => m.ZipCode)
+                                </div>
+                            </div>
+                            <br /><br />
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    @Html.LabelFor(m => m.RecordSourceID)
+                                </div>
+                                <div class="col-sm-4">
+                                    @Html.DropDownListFor(m => m.RecordSourceID, Model.RecordSourceList)
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.Map Panel -->
+
+                </div>
+
+                <div class="col-lg-4">
+                    <!--Map Panel-->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Price Detail
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    @Html.LabelFor(m => m.ListPrice)
+                                </div>
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(m => m.ListPrice)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    @Html.LabelFor(m => m.Zestimate)
+                                </div>
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(m => m.Zestimate)
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.Map Panel -->
+
+                </div>
+
+                <div class="col-lg-4">
+                    <!--Map Panel-->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Size/Rooms
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    @Html.LabelFor(m => m.SquareFeet)
+                                </div>
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(m => m.SquareFeet)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    @Html.LabelFor(m => m.Bedrooms)
+                                </div>
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(m => m.Bedrooms)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    @Html.LabelFor(m => m.Bathrooms)
+                                </div>
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(m => m.Bathrooms)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    @Html.LabelFor(m => m.Garage)
+                                </div>
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(m => m.Garage)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    @Html.LabelFor(m => m.Basement)
+                                </div>
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(m => m.Basement)
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.Map Panel -->
+
+                </div>
+
+            </div>
+    <div class="row">
+        <div class="col-sm-1">
+            <input type="submit" value="^ Save Changes ^" id="SaveButton" />
+        </div>
+    </div>
+    <br />
+        }
+
+
+        <div class="row">
+            <div class="col-lg-12">
+                <!--Map Panel-->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Pictures (<a href="#" onclick="AddPic();">Add Picture</a>)
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="row">
+                            @foreach (var pic in Model.PropertyPics)
+                            {
+
+                                <div class="col-lg-1">
+                                    <img src="@pic.ImageUrl" width="150px" />
+                                </div>
+
+                            }
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Property Details</h4>
+                        <input type="hidden" id="modalPropertyId" />
+                    </div>
+                    <div id="AddressInfo" class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" id="EditButton" onclick="javascript: Edit();">Edit</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <div class="modal fade" id="picModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Property Details</h4>
+
+                    </div>
+
+                    @using (Html.BeginForm("UploadPic", "Properties", FormMethod.Post, new { enctype = "multipart/form-data", id = "picForm" }))
+                    {
+                        <div id="picInfo" class="modal-body">
+                            @Html.HiddenFor(x => x.PropertyID)
+                            <b>Please select a file</b>
+                            <input type="file" id="PicUpload" name="PicUpload" />
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-default" id="PicSaveButton">Upload</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    }
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <script language="javascript">
+
+
+        </script>

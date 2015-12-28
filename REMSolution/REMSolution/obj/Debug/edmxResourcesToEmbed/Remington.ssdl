@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="RemingtonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Images">
+    <Key>
+      <PropertyRef Name="ImageId" />
+    </Key>
+    <Property Name="ImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ImageUrl" Type="varchar" MaxLength="500" />
+    <Property Name="PropertyId" Type="int" Nullable="false" />
+    <Property Name="PropDefault" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PropertyTypes">
+    <Key>
+      <PropertyRef Name="PropertyTypeId" />
+    </Key>
+    <Property Name="PropertyTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PropertyTypeName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Icon" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RealProperties">
+    <Key>
+      <PropertyRef Name="PropertyID" />
+    </Key>
+    <Property Name="PropertyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PropertyName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="AddressLine1" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="AddressLine2" Type="varchar" MaxLength="50" />
+    <Property Name="City" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="State" Type="varchar" MaxLength="2" Nullable="false" />
+    <Property Name="ZipCode" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="RecordSourceID" Type="int" />
+    <Property Name="ListPrice" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Zestimate" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="PropertyTypeId" Type="int" />
+    <Property Name="Garage" Type="varchar" MaxLength="50" />
+    <Property Name="Bedrooms" Type="varchar" MaxLength="50" />
+    <Property Name="Bathrooms" Type="varchar" MaxLength="50" />
+    <Property Name="SquareFeet" Type="varchar" MaxLength="50" />
+    <Property Name="Basement" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="RecordSources">
+    <Key>
+      <PropertyRef Name="RecordSourceID" />
+    </Key>
+    <Property Name="RecordSourceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RecordSourceName" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_REMProperties_REMPropertyTypes">
+    <End Role="PropertyTypes" Type="Self.PropertyTypes" Multiplicity="0..1" />
+    <End Role="RealProperties" Type="Self.RealProperties" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PropertyTypes">
+        <PropertyRef Name="PropertyTypeId" />
+      </Principal>
+      <Dependent Role="RealProperties">
+        <PropertyRef Name="PropertyTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_REMProperties_REMRecordSources">
+    <End Role="RecordSources" Type="Self.RecordSources" Multiplicity="0..1" />
+    <End Role="RealProperties" Type="Self.RealProperties" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RecordSources">
+        <PropertyRef Name="RecordSourceID" />
+      </Principal>
+      <Dependent Role="RealProperties">
+        <PropertyRef Name="RecordSourceID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_REMRecordSources_REMRecordSources">
+    <End Role="RecordSources" Type="Self.RecordSources" Multiplicity="1" />
+    <End Role="RecordSources1" Type="Self.RecordSources" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="RecordSources">
+        <PropertyRef Name="RecordSourceID" />
+      </Principal>
+      <Dependent Role="RecordSources1">
+        <PropertyRef Name="RecordSourceID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="RemingtonModelStoreContainer">
+    <EntitySet Name="Images" EntityType="Self.Images" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PropertyTypes" EntityType="Self.PropertyTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RealProperties" EntityType="Self.RealProperties" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RecordSources" EntityType="Self.RecordSources" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_REMProperties_REMPropertyTypes" Association="Self.FK_REMProperties_REMPropertyTypes">
+      <End Role="PropertyTypes" EntitySet="PropertyTypes" />
+      <End Role="RealProperties" EntitySet="RealProperties" />
+    </AssociationSet>
+    <AssociationSet Name="FK_REMProperties_REMRecordSources" Association="Self.FK_REMProperties_REMRecordSources">
+      <End Role="RecordSources" EntitySet="RecordSources" />
+      <End Role="RealProperties" EntitySet="RealProperties" />
+    </AssociationSet>
+    <AssociationSet Name="FK_REMRecordSources_REMRecordSources" Association="Self.FK_REMRecordSources_REMRecordSources">
+      <End Role="RecordSources" EntitySet="RecordSources" />
+      <End Role="RecordSources1" EntitySet="RecordSources" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
