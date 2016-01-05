@@ -7,6 +7,7 @@ using System.IO;
 
 namespace REMSolution.Controllers
 {
+    [Authorize]
     public class PropertiesController : Controller
     {
         // GET: Properties
